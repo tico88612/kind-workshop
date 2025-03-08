@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: busybox
+        command: [ "sh", "-c", "echo APP_MODE=$APP_MODE; echo DB_USER=$DB_USER; sleep 3600" ]
+        env:
+        - name: APP_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: APP_MODE
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: LOG_LEVEL
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: DB_USER
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: DB_PASS

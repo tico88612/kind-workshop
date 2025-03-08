@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-svc
+  namespace: lab04
+spec:
+  selector:
+    org: webserver
+    app: apache
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  namespace: lab04
+spec:
+  selector:
+    org: webserver
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: all-svc
+  namespace: lab04
+spec:
+  selector:
+    org: webserver
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
